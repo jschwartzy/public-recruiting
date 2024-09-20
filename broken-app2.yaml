@@ -14,7 +14,7 @@ spec:
         app: broken-app2
     spec:
       containers:
-        command: ["tail"]
+      - command: ["tail"]
         args: ["-f", "/dev/null"]
         image: alpine
         imagePullPolicy: Always
