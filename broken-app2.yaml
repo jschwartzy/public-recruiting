@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken-app2
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broken-app2
+  template:
+    metadata:
+      labels:
+        app: broken-app2
+    spec:
+      containers:
+        command: ["tail"]
+        args: ["-f", "/dev/null"]
+        image: alpine
+        imagePullPolicy: Always
+        name: app
+        resources:
+          requests:
+            cpu: 1024m
+            memory: 536Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        type: arm64
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 60
+      tolerations:
+      - effect: NoSchedule
+        key: dedicated
+        operator: Equal
+        value: arm64
